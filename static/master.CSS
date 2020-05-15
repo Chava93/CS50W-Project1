@@ -1,0 +1,19 @@
+body {
+	background-color: #F5EEE9 !important;
+}
+
+#brand-name {
+	color: #F5EEE9 !important;
+	font-family: Lobster,sans-serif !important;
+  font-size: 2em;
+}
+
+.main-content {
+  padding: 2em;
+  margin: 2em;
+}
+
+h2 {
+  font-family: "Noto Sans JP",sans-serif !important;
+  color: #514E4C !important;
+}

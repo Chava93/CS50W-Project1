@@ -21,13 +21,19 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 user = Users(db)
 
-@app.route("/")
-def index():
+@app.route("/login")
+def logIn():
     return render_template("/login.html", message="")
 
 @app.route("/signUp")
 def signUp():
     return render_template("/registration.html")
+
+@app.route("/", methods=["GET","POST"])
+def index():
+    if request.method == "POST":
+        return render_template("/search.html", message="Esto es un post")
+    return render_template("/search.html", message="")
 
 @app.route("/signupStatus", methods=["POST"])
 def signup_status():

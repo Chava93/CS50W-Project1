@@ -27,18 +27,18 @@
       <div class="col-lg-8 offset-lg-2">
         <h2>Sign up</h2>
         <br>
-        <form>
+        <form action="{{ url_for('signup_status') }}" method="post">
           <div class="form-group">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="name@example.com">
+            <input type="email" class="form-control" name="email" placeholder="name@example.com">
           </div>
           <div class="form-group">
             <label for="username">User Name</label>
-            <input type="email" class="form-control" id="username" placeholder="My Username">
+            <input class="form-control" name="username" placeholder="My Username">
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="password" id="exampleInputPassword1">
+            <input type="password" class="password" name="password">
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary" style="background-color: #9B470B;border-color: #9B470B;">Submit</button>

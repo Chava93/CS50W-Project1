@@ -1,6 +1,6 @@
 import os
-
-from flask import Flask, session, render_template
+from conections import Users
+from flask import Flask, request, session, render_template
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -19,12 +19,22 @@ Session(app)
 # Set up database
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
-
+user = Users(db)
 
 @app.route("/")
 def index():
-    return render_template("/login.html")
+    return render_template("/login.html", message="")
 
 @app.route("/signUp")
 def signUp():
     return render_template("/registration.html")
+
+@app.route("/signupStatus", methods=["POST"])
+def signup_status():
+    name = request.form.get("username")
+    email = request.form.get("email")
+    pwd = request.form.get("password")
+    print("FORM REQUEST")
+    print(f"Name: {name}, Email: {email}, Pass: {pwd}")
+    message = user.insert_user(name,email,pwd)
+    return f"<h1> {message} </h1>"

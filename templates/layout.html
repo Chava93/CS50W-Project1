@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title>{% title %}</title>
+      <title>{% block title %} {% end block%}</title>
       <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
       <link href="https://fonts.googleapis.com/css?family=Noto Sans JP" rel="stylesheet" type="text/css">
       <link rel="stylesheet" href="master.CSS">
@@ -24,7 +24,8 @@
     </nav>
     <!-- Termina NavBar y comienza contenido -->
     <div class="main-content">
-
+      {% block body %}
+      {% end block %}
     </div>
   </body>
 </html>

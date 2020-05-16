@@ -13,7 +13,16 @@ body {
   margin: 2em;
 }
 
-h2 {
+h1,h2 {
   font-family: "Noto Sans JP",sans-serif !important;
   color: #514E4C !important;
+}
+
+p {
+	font-family: "Noto Sans JP",sans-serif;
+}
+
+button {
+	background-color: #9B470B !important;
+	border-color: #9B470B !important;
 }

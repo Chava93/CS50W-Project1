@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <title>{% block title %} {% end block%}</title>
+      <title>{% block title %} {% endblock%}</title>
       <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
       <link href="https://fonts.googleapis.com/css?family=Noto Sans JP" rel="stylesheet" type="text/css">
-      <link rel="stylesheet" href="master.CSS">
+      <link rel="stylesheet" href="{{ url_for('static', filename='master.CSS') }}">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
@@ -25,7 +25,7 @@
     <!-- Termina NavBar y comienza contenido -->
     <div class="main-content">
       {% block body %}
-      {% end block %}
+      {% endblock %}
     </div>
   </body>
 </html>

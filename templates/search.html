@@ -1,9 +1,34 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    First Page
+    Libros
 {% endblock %}
 
 {% block body %}
   <h1>Search for a book</h1>
+  <p>
+    To search a book, fill <b>at least</b> one of the following options.
+  </p>
+  <div class="col-lg-8 offset-lg-2">
+    <!-- Comienza formulario de busqueda -->
+    <form class="form-row" action="{{ url_for('index') }}" method="post">
+      <!-- opcion 1 -->
+      <div class="form-group col-md-4">
+       <label for="isbn">ISBN</label>
+       <input type="text" class="form-control" id="isbn" placeholder="Ej. 0576" name="isbn">
+     </div>
+     <!-- Opcion 2 -->
+     <div class="form-group col-md-4">
+      <label for="name">Book Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Book name" name="book">
+    </div>
+    <!-- opcion 3 -->
+    <div class="form-group col-md-4">
+     <label for="author">Author</label>
+     <input type="text" class="form-control" id="author" placeholder="Author name" name="author">
+   </div>
+   <button type="submit" class="btn btn-primary">Search Book</button>
+    </form>
+    <p>{{ message}}</p>
+  </div>
 {% endblock %}

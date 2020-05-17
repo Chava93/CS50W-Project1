@@ -57,3 +57,8 @@ def index():
     if request.method == "POST":
         return render_template("/search.html", message="Esto es un post")
     return render_template("/search.html", message="")
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    del session["user"]
+    return redirect("/login")

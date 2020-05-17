@@ -26,14 +26,13 @@ class Users:
             self.db.commit()
         except Exception as e:
             if "duplicate" in str(e.orig):
-                message = f"User {username} Already exists"
+                message = f"User {username} or email {useremail} Already exists"
             else:
                 message = f"Failed to insert {username} with error {str(e.orig)}"
         return message
     def getUser(self, username):
         """
-        Function to query an user from table users.
-        input
+        Get user by user name OR user email.
         -----
         username: str
             user name
@@ -47,6 +46,7 @@ class Users:
             SELECT *
             FROM users
             Where username = (:user)
+                OR email = (:user)
             """
         values = self.db.execute(q, {"user":username})
         return values.first()
@@ -84,6 +84,7 @@ class Users:
         q = """
         DELETE FROM users
         WHERE username = (:user)
+            OR email = (:user)
         """
         q = self.db.execute(q, {"user":username})
         self.db.commit()

@@ -45,7 +45,7 @@
       {%for B in books%}
       <tr>
         <th scope="row">{{loop.index}}</th>
-        <td>{{B[0]}}</td>
+        <td><a href="{{url_for('book_reviews', isbn = B[0])}}">{{B[0]}}</a></td>
         <td>{{B[1]}}</td>
         <td>{{B[2]}}</td>
         <td>{{B[3]}}</td>

@@ -1,9 +1,10 @@
 import os
-from conections import Users
 from flask import Flask, request, redirect, session, render_template
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+## LOCAL LIBRARIES ##
+from conections import Users, Books
 
 app = Flask(__name__)
 
@@ -20,14 +21,21 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 user = Users(db)
+books = Books(db)
 
-@app.route("/login")
+@app.route("/login", methods=["GET","POST"])
 def logIn():
-    name = request.form.get("username")
-    pwd = request.form.get("password")
-    ## Look user as username
-    userinfo = user.getUser(name)
-    ## If not found
+    if request.method == "POST":
+        # name may be an user or username
+        name = request.form.get("username")
+        pwd = request.form.get("password")
+        ## Look user as username
+        userinfo, message = user.validateUser(name, pwd)
+        if userinfo:
+            session["user"] = userinfo
+            return redirect("/")
+        ## If not found
+        return render_template("/login.html", message="User and username not Found.")
     return render_template("/login.html", message="")
 
 @app.route("/signup", methods=["GET","POST"])
@@ -55,7 +63,13 @@ def index():
         return redirect("/login")
     print(f"logged with user: {session['user']}")
     if request.method == "POST":
-        return render_template("/search.html", message="Esto es un post")
+        query_info = {
+            "isbn": request.form.get("isbn"),
+            "title": request.form.get("book"),
+            "author": request.form.get("author"),
+        }
+        info, message = books.get_book(query_info)
+        return render_template("/search.html", message=message, books=info)
     return render_template("/search.html", message="")
 
 @app.route("/logout", methods=["GET"])

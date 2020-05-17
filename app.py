@@ -76,3 +76,7 @@ def index():
 def logout():
     del session["user"]
     return redirect("/login")
+
+@app.route("/books/<string:isbn>")
+def book_reviews(isbn):
+    return f"Looking for {isbn}"

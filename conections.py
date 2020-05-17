@@ -89,3 +89,43 @@ class Users:
         q = self.db.execute(q, {"user":username})
         self.db.commit()
         return q,"Success"
+
+class Books:
+    """
+    Class to connect to books db
+    """
+    def __init__(self, db):
+        """
+        db: sqlalchemy.orm.scoping.scoped_session
+        Conection to db
+        """
+        self.db = db
+    def get_book(self, search_info):
+        """
+        Given a book isbn, name and/or author make
+            a query to the table users.
+        -----
+        search_info: dict
+            with keys ["isbn","title","author"] and at
+            least one value != None
+        returns: Tuple: (list_of_results, message)
+            list_of_results: list or None
+            message: str
+        """
+        # Check that at least one value is not null
+        if not any(search_info.values()):
+            message = "You have to enter al least one value."
+            return None,message
+        # Filter keys with not None values
+        info = [(k,v) for k,v in search_info.items() if v]
+        # Create the query given the info
+        patterns = list()
+        for k,v in info:
+            patterns.append(f"{k} SIMILAR TO '%{v}%'")
+        patterns = " AND ".join(patterns)
+        q = "SELECT * FROM books Where " + patterns
+        ## Query Table books
+        books = self.db.execute(q)
+        books = books.fetchall()
+        message = "" if books else "No book found. Please try again."
+        return books, message

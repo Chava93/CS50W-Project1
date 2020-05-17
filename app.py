@@ -23,6 +23,11 @@ user = Users(db)
 
 @app.route("/login")
 def logIn():
+    name = request.form.get("username")
+    pwd = request.form.get("password")
+    ## Look user as username
+    userinfo = user.getUser(name)
+    ## If not found
     return render_template("/login.html", message="")
 
 @app.route("/signup", methods=["GET","POST"])
@@ -48,6 +53,7 @@ def signUp():
 def index():
     if "user" not in session.keys():
         return redirect("/login")
+    print(f"logged with user: {session['user']}")
     if request.method == "POST":
         return render_template("/search.html", message="Esto es un post")
     return render_template("/search.html", message="")

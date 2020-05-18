@@ -1,3 +1,4 @@
+from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 
 class Users:
@@ -129,3 +130,52 @@ class Books:
         books = books.fetchall()
         message = "" if books else "No book found. Please try again."
         return books, message
+
+class Reviews:
+    def __init__(self, db):
+        self.db = db
+    def insert_review(self, user, isbn, review_info):
+        """
+        Insert a review into reviewd database.
+        review: dict
+            With keys [review, rating]
+        """
+        q = """
+        INSERT INTO reviews (isbn, username, review, rating)
+        VALUES (:isbn, :username, :review, :rating)
+        """
+        review, rating = review_info.values()
+        try:
+            self.db.execute(q, {"isbn":isbn, "username":user, "review":review, "rating":rating})
+            self.db.commit()
+        except Exception as e:
+            print("Problems inserting record into reviews")
+            print(e)
+    def get_review(self, info):
+        """
+        Get reviews from one book AND/OR
+            Get reviews from  one user
+        Inputs
+        -------
+        info: dict
+            with at least one key [username, isbn]
+        """
+        if not any(info.values()):
+            message = "You have to enter al least one value."
+            return None, message
+        # Filter keys with not None values
+        info = [(k,v) for k,v in info.items() if v]
+        # Create the query given the info
+        patterns = list()
+        for k,v in info:
+            patterns.append(f"{k} = '{v}'")
+        patterns = " AND ".join(patterns)
+        q = "SELECT * FROM reviews WHERE " + patterns
+        res = self.db.execute(q).fetchall()
+        if res:
+            # Convert datetimes to string
+            res = [(*x[:-1],datetime.strftime(x[-1], format = "%d-%m-%Y %H:%S") ) for x in res]
+            return res,""
+
+        message = "No data retireved"
+        return None, message

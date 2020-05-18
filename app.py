@@ -4,7 +4,7 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 ## LOCAL LIBRARIES ##
-from conections import Users, Books
+from conections import Users, Books, Reviews
 
 app = Flask(__name__)
 
@@ -22,6 +22,7 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 user = Users(db)
 books = Books(db)
+reviews = Reviews(db)
 
 @app.route("/login", methods=["GET","POST"])
 def logIn():
@@ -77,6 +78,21 @@ def logout():
     del session["user"]
     return redirect("/login")
 
-@app.route("/books/<string:isbn>")
+@app.route("/books/<string:isbn>", methods=["GET","POST"])
 def book_reviews(isbn):
-    return f"Looking for {isbn}"
+    if "user" not in session.keys():
+        return redirect("/login")
+    if request.method == "POST":
+        review_info = {
+            "review": request.form.get("review"),
+            "rating": request.form.get("rating")
+        }
+        if review_info["review"]:
+            user = session["user"]["user"]
+            reviews.insert_review(user, isbn, review_info)
+    review, rev_message = reviews.get_review({"isbn":isbn})
+    book,message = books.get_book({"isbn":isbn})
+    print(review)
+    if not book:
+        return message
+    return render_template("book.html", book = book[0], reviews=review)

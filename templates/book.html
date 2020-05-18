@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Reviews
+{% endblock %}
+
+{% block body %}
+<h2> Create a review </h2>
+<br>
+<div class="row" style="text-align:center;">
+  <div class="col-lg-3 offset-lg-">
+    <strong>ISBN</strong>
+  </div>
+  <div class="col-lg-3 offset-lg-">
+    <strong>Title</strong>
+  </div>
+  <div class="col-lg-3 offset-lg-">
+    <strong>Author</strong>
+  </div>
+  <div class="col-lg-3 offset-lg-">
+    <strong>Year</strong>
+  </div>
+</div>
+<div class="row" style="text-align:center;">
+  <div class="col-lg-3 offset-lg-">
+    {{book.isbn}}
+  </div>
+  <div class="col-lg-3 offset-lg-">
+    {{book.title}}
+  </div>
+  <div class="col-lg-3 offset-lg-">
+    {{book.author}}
+  </div>
+  <div class="col-lg-3 offset-lg-">
+    {{book.year}}
+  </div>
+</div>
+<br>
+<br>
+<p>Please fill in the following information to create a review.</p>
+<div class="row">
+  <div class="col-lg-10 offset-lg">
+    <form action="#" method="post">
+      <div class="form-group col-md-12">
+        <label for="review">Write your review</label>
+        <textarea class="form-control" id="review" name="review" rows="3"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="rating">Rating from 0 to 5</label>
+          <input type="number" class="form-control" name="rating" id="rating" value="3">
+        </div>
+        <div class="form-group col-md-4">
+          <br>
+           <button type="submit" class="btn btn-primary" style="background-color: #9B470B;border-color: #9B470B;">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<br>
+<div class="">
+  {% if reviews %}
+    {% for r in reviews%}
+    <div class="card">
+      <div class="card-header">
+        {{ r[2].title() }} on {{ r[5] }}
+      </div>
+      <div class="card-body">
+        <p class="card-text"> {{ r[3] }} </p>
+      </div>
+    </div>
+    <br>
+    {% endfor %}
+  {% else %}
+  <div>
+    <p>No reviews yet.</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

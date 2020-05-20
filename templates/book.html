@@ -8,32 +8,48 @@
 <h2> Create a review </h2>
 <br>
 <div class="row" style="text-align:center;">
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     <strong>ISBN</strong>
   </div>
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     <strong>Title</strong>
   </div>
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     <strong>Author</strong>
   </div>
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     <strong>Year</strong>
   </div>
+  {% if goodread %}
+  <div class="col-lg offset-lg-">
+    <strong>Reviews count</strong>
+  </div>
+  <div class="col-lg offset-lg-">
+    <strong>Rating</strong>
+  </div>
+  {% endif  %}
 </div>
 <div class="row" style="text-align:center;">
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     {{book.isbn}}
   </div>
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     {{book.title}}
   </div>
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     {{book.author}}
   </div>
-  <div class="col-lg-3 offset-lg-">
+  <div class="col-lg offset-lg-">
     {{book.year}}
   </div>
+  {% if goodread %}
+  <div class="col-lg offset-lg-">
+    {{goodread.work_ratings_count}}
+  </div>
+  <div class="col-lg offset-lg-">
+    {{goodread.average_rating}}
+  </div>
+  {% endif  %}
 </div>
 <br>
 <br>

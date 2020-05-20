@@ -1,3 +1,4 @@
+import requests
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 
@@ -179,3 +180,19 @@ class Reviews:
 
         message = "No data retireved"
         return None, message
+
+class Goodreads:
+    url = "https://www.goodreads.com/book/review_counts.json"
+    def __init__(self, key):
+        self.key = key
+    def get_reviews(self, isbns):
+        params = {
+            "isbns":isbns,
+            "key": self.key
+        }
+        rev = requests.get(self.url, params = params)
+        if rev.status_code==200:
+            res = {k:v for k,v in rev.json()["books"][0].items() if k in ["isbn","work_ratings_count","average_rating"]}
+            return res, ""
+        else:
+            return None, "Bad request"

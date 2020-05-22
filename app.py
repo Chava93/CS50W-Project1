@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, session, render_template
+from flask import Flask, request, redirect, session, render_template, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -101,4 +101,19 @@ def book_reviews(isbn):
     print(review)
     if not book:
         return message
-    return render_template("book.html", book = book[0], goodread = gr_rev, reviews=review)
+    return render_template("book.html", book = book[0], goodread = gr_rev,
+    reviews=review)
+
+@app.route("/api/<string:isbn>", methods=["GET"])
+def api_conn(isbn):
+    ## Get reviews from Goodreads
+    gr_rev, gr_message = GR.get_reviews(isbn)
+    if not gr_rev:
+        return jsonify({"error":"book not found"}), 404
+    ## Get reviews from database
+    book, message = books.get_book({"isbn":isbn})
+    if isinstance(book, list):
+        _isbn, title, author, year = book.pop(0)
+        return jsonify(title=title, author=author, year=year, isbn=_isbn,
+        review_count=gr_rev["work_ratings_count"], average_score=gr_rev["average_rating"])
+    return

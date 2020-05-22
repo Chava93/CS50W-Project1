@@ -5,6 +5,7 @@ This project builds up a book review web application named "Libros".
 The key functionalities are:
 1. Register a new user.
 2. Log in users.
+3. Log out Users.
 3. Allow users to look for books given the isbns, title or author and if Found give a rating and leave comments.
 4. Allow users to query book information via API
 
